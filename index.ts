@@ -9,7 +9,7 @@ app.get("/", (req, res) => {
 });
 
 app.get("/ops", (req, res) => {
-  res.send("<h2>Ops is updated now</h2>")
+  res.send("<h1>Ops is updated now</h1>")
 })
 
 app.listen(PORT, () => {
