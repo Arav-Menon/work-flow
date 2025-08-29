@@ -1,0 +1,29 @@
+name: Work-flow-backend
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: "Clone repo"
+        uses: actions/checkout@v2
+        with:
+          fetch-depth: 0
+
+      - name: Docker login
+        uses: docker/login-actions@v3
+        with:
+          username: ${{secrets.DOCKERHUB_USERNAME}}
+          passowrd: ${{secrets.DOCKERHUB_TOKEN}}
+
+      - name: Build & push workflow-backend
+        uses: docker/build-push-action@v4
+        with:
+          context: ./
+          file: dockerfile
+          push: true
+          tags: aravmenon12/work-flow:${{ github.sha }}
