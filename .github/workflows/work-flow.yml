@@ -27,3 +27,16 @@ jobs:
           file: dockerfile
           push: true
           tags: aravmenon12/work-flow:${{ github.sha }}
+
+      - name: Clone staging-ops repo, update, and push
+        env:
+          PAT: ${{ secrets.PAT }}
+        run: |
+          git clone https://github.com/Arav-Menon/staging-ops.git
+          cd staging-ops
+          sed -i 's|image: Arav-Menon/staging-ops:.*|image: aravmenon12/work-flow:${{ github.sha }}|' work-flows/deployment.yml
+          git config user.name "GitHub Actions Bot"
+          git config user.email "actions@github.com"
+          git add work-flows/deployment.yml
+          git commit -m "update work-flow image to ${{ github.sha }}"
+          git push https://${PAT}@github.com/Arav-Menon/staging-ops.git main
